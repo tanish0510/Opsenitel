@@ -1,0 +1,27 @@
+========== Full System Debug Report ==========
+Generated on: Thu Jul 10 11:36:51 IST 2025
+----------------------------------------
+System Uptime:
+11:36  up 8 days,  1:02, 3 users, load averages: 1.75 2.01 2.08
+----------------------------------------
+Disk Usage:
+Root (/) Usage: 3%
+Warning: Disk usage is critically high.
+----------------------------------------
+Active Sessions:
+Currently logged in users: tanish.seth
+Normal user activity.
+----------------------------------------
+OS Information:
+Could not determine OS version.
+----------------------------------------
+CPU Load Averages:
+1.75 2.01 2.08
+CPU load is normal.
+----------------------------------------
+Final Summary:
+- Checked Disk Usage status.
+- Checked User Sessions status.
+- Checked CPU Load status.
+----------------------------------------
+System audit completed successfully.

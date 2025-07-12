@@ -1,0 +1,28 @@
+<--- System Maintenance Report --->
+Uptime: 11:30  up 8 days, 55 mins, 3 users, load averages: 2.94 2.12 2.15
+Users online: tanish.seth
+Disk capacity and mounts:
+Capacity | Mounted
+3% | /
+100% | /dev
+4% | /System/Volumes/VM
+2% | /System/Volumes/Preboot
+1% | /System/Volumes/Update
+2% | /System/Volumes/xarts
+2% | /System/Volumes/iSCPreboot
+1% | /System/Volumes/Hardware
+19% | /System/Volumes/Data
+92% | /Volumes/Docker
+62% | /Volumes/DBeaver
+90% | /Volumes/Warp
+65% | /Volumes/MongoDB
+82% | /Volumes/VirtualBox
+73% | /Volumes/UTM
+79% | /Volumes/Ollama
+93% | /Volumes/Docker
+Total temp cleaned files:       13
+Top 3 log files larger than 5MB:
+8.3M	/var/log/install.log
+Recent login activity:
+
+wtmp begins Thu Jul 10 11:30:27 IST 2025
