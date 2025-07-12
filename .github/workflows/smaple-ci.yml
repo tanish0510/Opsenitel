@@ -1,0 +1,82 @@
+name: CI/CD Pipeline for OpsSentinel
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docker-scan:
+    name: Build and Trivy Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker Image
+      run: docker build -t opssentinel:latest .
+
+    - name: Trivy Vulnerability Scan
+      uses: aquasecurity/trivy-action@v0.3.0. # Use a specific version for stability in future runs
+      with:
+        image-ref: opssentinel:latest
+        format: sarif
+        output: trivy-report.sarif
+        severity: CRITICAL,HIGH,MEDIUM
+        continue-on-error: true
+
+  terraform-deploy:
+    name: Terraform Deploy on PR Merge
+    runs-on: ubuntu-latest
+    needs: docker-scan
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Plan
+      run: terraform plan
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+
+  publish-ecr:
+    name: Push Docker Image to AWS ECR
+    runs-on: ubuntu-latest
+    needs: docker-scan
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Tag and Push Docker Image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: opssentinel
+        IMAGE_TAG: latest
+      run: |
+        docker tag opssentinel:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
