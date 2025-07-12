@@ -44,6 +44,8 @@ A modular Linux-based utility designed to diagnose and fix system-level issues l
 
 ## ⚙️ Setup & Usage
 ```
+# Setup your required secrets in Secrets and Variables > repo settings > your repo section
+
 # 🔧 Run the script manually
 bash ./tasks.sh
 
